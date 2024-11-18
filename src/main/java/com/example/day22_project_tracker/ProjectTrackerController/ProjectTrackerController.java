@@ -26,7 +26,7 @@ public class ProjectTrackerController {
             return ResponseEntity.status(400).body(errors.getFieldError().getDefaultMessage());
         }
         projects.add(project);
-        return ResponseEntity.status(201).body(new ApiResponse("Project added successfully"));
+        return ResponseEntity.status(200).body(new ApiResponse("Project added successfully"));
     }
 
     @PutMapping("/update/{index}")
@@ -41,12 +41,16 @@ public class ProjectTrackerController {
     @DeleteMapping("/delete/{index}")
     public ResponseEntity deleteProject(@PathVariable int index) {
 
+        if(index < 0 || index > projects.size()){
+            return ResponseEntity.status(400).body(new ApiResponse("Project not found"));
+
+        }
         projects.remove(index);
         return ResponseEntity.status(200).body(new ApiResponse("Project deleted successfully"));
     }
 
 
-    @PutMapping("chnage-status/{index}")
+    @PutMapping("change-status/{index}")
     public ResponseEntity changeProjectStatus(@PathVariable int index) {
 
         if (index <0 || index > projects.size())
