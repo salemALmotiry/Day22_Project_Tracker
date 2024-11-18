@@ -46,15 +46,22 @@ public class ProjectTrackerController {
     }
 
 
-    @PutMapping("chnage-status/{index}/{status}")
-    public ResponseEntity changeProjectStatus(@PathVariable int index, @PathVariable String status ) {
-        String regexp = "^(Not Started|in Progress|Completed)$";
-        if (status.matches(regexp)){
-            projects.get(index).setStatus(status);
+    @PutMapping("chnage-status/{index}")
+    public ResponseEntity changeProjectStatus(@PathVariable int index) {
+
+        if (index <0 || index > projects.size())
+            return ResponseEntity.status(400).body(new ApiResponse("Project not found"));
+
+        String status = projects.get(index).getStatus();
+        if (status.equalsIgnoreCase("Not Started")){
+            projects.get(index).setStatus("in Progress");
             return ResponseEntity.status(200).body(new ApiResponse("Status updated successfully"));
 
+        }else if (status.equalsIgnoreCase("in Progress")){
+            projects.get(index).setStatus("Completed");
+            return ResponseEntity.status(200).body(new ApiResponse("Status updated successfully"));
         }else {
-            return ResponseEntity.status(400).body(new ApiResponse("Status must be Not Started or in Progress or Completed only"));
+            return ResponseEntity.status(400).body(new ApiResponse("Project is Completed"));
 
         }
 

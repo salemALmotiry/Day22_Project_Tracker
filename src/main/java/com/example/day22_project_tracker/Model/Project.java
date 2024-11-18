@@ -32,6 +32,7 @@ public class Project {
 
     @NotNull(message = "Enter company name")
     @Size(min = 6 ,message = "company name must be longer than 6")
+    @Pattern(regexp = "^[a-zA-Z0-9][a-zA-Z0-9 .,\\'-]{5,99}$",message = "special characters not allow")
     private String companyName;
 
 
